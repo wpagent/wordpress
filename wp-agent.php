@@ -25,10 +25,14 @@ require_once WP_AGENT_PLUGIN_DIR . 'includes/class-wp-agent.php';
 require_once WP_AGENT_PLUGIN_DIR . 'includes/class-wp-agent-admin.php';
 require_once WP_AGENT_PLUGIN_DIR . 'includes/class-wp-agent-api.php';
 require_once WP_AGENT_PLUGIN_DIR . 'includes/class-wp-agent-user.php';
-require_once WP_AGENT_PLUGIN_DIR . 'includes/class-wp-agent-updater.php';
 
 if (is_admin()) {
-    new WP_Agent_Updater(__FILE__);
+    require_once plugin_dir_path(__FILE__) . 'includes/class-wp-agent-updater.php';
+    $updater = new WP_Agent_Updater(
+        WP_AGENT_VERSION,
+        'https://raw.githubusercontent.com/wpagent/wpagent/master/version.txt',
+        plugin_basename(__FILE__)
+    );
 }
 
 function wp_agent_enqueue_scripts($hook)

@@ -144,8 +144,6 @@ class WP_Agent_Admin
                         </button>
                     </form>
                 </div>
-            <?php else : ?>
-                <p class="tw-text-red-500 tw-font-bold">Please set your API key to enable sync functionality.</p>
             <?php endif; ?>
         </div>
     <?php
