@@ -3,7 +3,7 @@
 /**
  * Plugin Name: WPAgent.ai
  * Description: Your WordPress AI Assistant
- * Version: 0.1
+ * Version: 0.1.1
  * Author: WPAgent.ai
  * Author URI: https://wpagent.ai
  * GitHub Plugin URI: https://github.com/wpagent/wordpress
@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WP_AGENT_VERSION', '0.1');
+define('WP_AGENT_VERSION', '0.1.1');
 define('WP_AGENT_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WP_AGENT_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WP_AGENT_API_ENDPOINT', 'https://api.wpagent.ai/v0');
