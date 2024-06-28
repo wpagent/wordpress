@@ -213,7 +213,7 @@ class WP_Agent_Admin
         }
 
         try {
-            $this->api->validate_api_key($api_key);
+            $this->api->validate_api_key($api_key, $old_value);
             return $new_value;
         } catch (Exception $e) {
             add_settings_error('wp_agent_api_key', 'invalid_api_key', $e->getMessage());
