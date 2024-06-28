@@ -1,5 +1,5 @@
 <template>
-  <div id="wp-agent-app" class="wp-agent-container" v-if="wpAgentData.showModal">
+  <div id="wp-agent-app" class="wp-agent-container" v-if="wpAgentData.showModal && wpAgentData.apiKey">
     <ChatModal v-if="isModalOpen" @close="toggleModal" />
     <button id="open-chat-modal"
             @click="toggleModal"
@@ -19,7 +19,7 @@ const isModalOpen = ref(false);
 
 onMounted(() => {
   const storedValue = localStorage.getItem('isModalOpen');
-  isModalOpen.value = storedValue === 'true' && wpAgentData.value.showModal;
+  isModalOpen.value = storedValue === 'true' && wpAgentData.value.showModal && wpAgentData.value.apiKey;
 });
 
 const toggleModal = () => {
