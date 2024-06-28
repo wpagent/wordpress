@@ -1,17 +1,21 @@
 <?php
 
-class WP_Agent_User {
+class WP_Agent_User
+{
     private $username;
 
-    public function __construct($username = WP_AGENT_USERNAME) {
+    public function __construct($username = WP_AGENT_USERNAME)
+    {
         $this->username = $username;
     }
 
-    public function get_user() {
+    public function get_user()
+    {
         return get_user_by('login', $this->username);
     }
 
-    public function get_or_create_application_password() {
+    public function get_or_create_application_password()
+    {
         $user = $this->get_user();
         if (!$user) {
             return false;
@@ -25,7 +29,8 @@ class WP_Agent_User {
         return $this->create_application_password($user->ID);
     }
 
-    private function get_application_password() {
+    private function get_application_password()
+    {
         $user = $this->get_user();
         if (!$user || !class_exists('WP_Application_Passwords')) {
             return false;
@@ -44,7 +49,8 @@ class WP_Agent_User {
         return false;
     }
 
-    private function create_application_password($user_id) {
+    private function create_application_password($user_id)
+    {
         if (!class_exists('WP_Application_Passwords')) {
             return false;
         }
@@ -65,7 +71,8 @@ class WP_Agent_User {
         return $app_password;
     }
 
-    public function create_user_if_not_exists() {
+    public function create_user_if_not_exists()
+    {
         if (!username_exists($this->username)) {
             $user_id = wp_create_user($this->username, wp_generate_password(), 'agent@wpagent.ai');
             wp_update_user(array('ID' => $user_id, 'role' => 'editor'));

@@ -1,9 +1,11 @@
 <?php
 
-class WP_Agent_Admin {
+class WP_Agent_Admin
+{
     private $api;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->api = new WP_Agent_API();
 
         add_action('admin_menu', array($this, 'create_admin_menu'));
@@ -17,7 +19,8 @@ class WP_Agent_Admin {
     }
 
 
-    public function create_admin_menu() {
+    public function create_admin_menu()
+    {
         add_menu_page(
             'WP Agent Settings',
             'WP Agent',
@@ -29,12 +32,14 @@ class WP_Agent_Admin {
         );
     }
 
-    public function enqueue_admin_scripts() {
+    public function enqueue_admin_scripts()
+    {
         wp_enqueue_style('tailwindcss', WP_AGENT_PLUGIN_URL . 'css/tailwind-output.css', array(), WP_AGENT_VERSION);
         wp_enqueue_script('persistent-chat-modal-js', WP_AGENT_PLUGIN_URL . 'dist/main.js', array(), WP_AGENT_VERSION, true);
     }
 
-    public function register_settings() {
+    public function register_settings()
+    {
         register_setting('wp_agent_settings_group', 'wp_agent_api_key', array(
             'sanitize_callback' => array($this, 'sanitize_api_key'),
         ));
@@ -73,15 +78,18 @@ class WP_Agent_Admin {
         );
     }
 
-    public function sanitize_api_key($value) {
+    public function sanitize_api_key($value)
+    {
         return sanitize_text_field($value);
     }
 
-    public function sanitize_checkbox($input) {
+    public function sanitize_checkbox($input)
+    {
         return (isset($input) && true == $input) ? true : false;
     }
 
-    public function redirect_to_settings_page() {
+    public function redirect_to_settings_page()
+    {
         if (get_option('wp_agent_activation_redirect', false)) {
             delete_option('wp_agent_activation_redirect');
             if (!isset($_GET['activate-multi'])) {
@@ -91,14 +99,15 @@ class WP_Agent_Admin {
         }
     }
 
-    public function render_settings_page() {
+    public function render_settings_page()
+    {
         if (!current_user_can('manage_wp_agent')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
         $api_key = get_option('wp_agent_api_key');
         $show_modal = get_option('wp_agent_show_modal', true);
-        ?>
+?>
         <div class="wrap">
             <h1 class="tw-text-2xl tw-font-bold tw-mb-6">WP Agent Settings</h1>
             <?php settings_errors(); ?>
@@ -139,17 +148,19 @@ class WP_Agent_Admin {
                 <p class="tw-text-red-500 tw-font-bold">Please set your API key to enable sync functionality.</p>
             <?php endif; ?>
         </div>
-        <?php
+    <?php
     }
 
-    public function render_api_key_field() {
+    public function render_api_key_field()
+    {
         $api_key = get_option('wp_agent_api_key');
-        ?>
+    ?>
         <input type="text" name="wp_agent_api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text">
-        <?php
+<?php
     }
 
-    public function handle_sync_state() {
+    public function handle_sync_state()
+    {
         if (!isset($_POST['wp_agent_sync_nonce']) || !wp_verify_nonce($_POST['wp_agent_sync_nonce'], 'wp_agent_sync_state')) {
             wp_die('Security check failed');
         }
@@ -170,7 +181,8 @@ class WP_Agent_Admin {
         exit;
     }
 
-    public function after_api_key_update($old_value, $new_value, $option) {
+    public function after_api_key_update($old_value, $new_value, $option)
+    {
         if ($new_value === $old_value) {
             return;
         }
@@ -189,7 +201,8 @@ class WP_Agent_Admin {
         }
     }
 
-    public function validate_api_key($new_value, $old_value) {
+    public function validate_api_key($new_value, $old_value)
+    {
         if ($new_value === $old_value) {
             return $old_value;
         }

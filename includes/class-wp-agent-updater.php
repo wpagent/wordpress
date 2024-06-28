@@ -1,6 +1,7 @@
 <?php
 
-class WP_Agent_Updater {
+class WP_Agent_Updater
+{
     private $slug;
     private $plugin_data;
     private $username;
@@ -8,19 +9,35 @@ class WP_Agent_Updater {
     private $plugin_file;
     private $github_response;
 
-    public function __construct($plugin_file) {
+    public function __construct($plugin_file)
+    {
         $this->plugin_file = $plugin_file;
         add_filter('pre_set_site_transient_update_plugins', array($this, 'check_update'));
         add_filter('plugins_api', array($this, 'plugin_popup'), 10, 3);
         add_filter('upgrader_post_install', array($this, 'after_install'), 10, 3);
 
         $this->slug = plugin_basename($this->plugin_file);
-        $this->plugin_data = get_plugin_data($this->plugin_file);
+        $this->plugin_data = $this->get_plugin_data();
         $this->username = 'wpagent';
         $this->repo = 'wordpress';
     }
 
-    private function get_repository_info() {
+    private function get_plugin_data()
+    {
+        $plugin_data = get_file_data($this->plugin_file, array(
+            'Version' => 'Version',
+            'Name' => 'Plugin Name',
+            'PluginURI' => 'Plugin URI',
+            'AuthorName' => 'Author',
+            'AuthorURI' => 'Author URI',
+            'Description' => 'Description'
+        ));
+
+        return $plugin_data;
+    }
+
+    private function get_repository_info()
+    {
         if (is_null($this->github_response)) {
             $request_uri = sprintf('https://api.github.com/repos/%s/%s/releases/latest', $this->username, $this->repo);
             $response = wp_remote_get($request_uri);
@@ -33,7 +50,8 @@ class WP_Agent_Updater {
         }
     }
 
-    public function check_update($transient) {
+    public function check_update($transient)
+    {
         if (empty($transient->checked)) {
             return $transient;
         }
@@ -57,7 +75,8 @@ class WP_Agent_Updater {
         return $transient;
     }
 
-    public function plugin_popup($result, $action, $args) {
+    public function plugin_popup($result, $action, $args)
+    {
         if ($action !== 'plugin_information') {
             return false;
         }
@@ -89,7 +108,8 @@ class WP_Agent_Updater {
         return $result;
     }
 
-    public function after_install($response, $hook_extra, $result) {
+    public function after_install($response, $hook_extra, $result)
+    {
         global $wp_filesystem;
 
         $install_directory = plugin_dir_path($this->plugin_file);

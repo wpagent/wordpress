@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name: WPAgent.ai
  * Description: Your WordPress AI Assistant
@@ -13,7 +14,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WP_AGENT_VERSION', '1.1');
+define('WP_AGENT_VERSION', '0.1');
 define('WP_AGENT_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WP_AGENT_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WP_AGENT_API_ENDPOINT', 'https://api.wpagent.ai/v0');
@@ -30,7 +31,8 @@ if (is_admin()) {
     new WP_Agent_Updater(__FILE__);
 }
 
-function wp_agent_enqueue_scripts($hook) {
+function wp_agent_enqueue_scripts($hook)
+{
     $css_file = WP_AGENT_PLUGIN_URL . 'dist/css/main.css';
     $js_file = WP_AGENT_PLUGIN_URL . 'dist/js/main.js';
 
@@ -47,12 +49,14 @@ function wp_agent_enqueue_scripts($hook) {
 }
 add_action('admin_enqueue_scripts', 'wp_agent_enqueue_scripts');
 
-function wp_agent_add_root_element() {
+function wp_agent_add_root_element()
+{
     echo '<div id="wp-agent-root"></div>';
 }
 add_action('admin_footer', 'wp_agent_add_root_element');
 
-function wp_agent() {
+function wp_agent()
+{
     return WP_Agent::get_instance();
 }
 

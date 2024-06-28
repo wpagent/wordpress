@@ -1,13 +1,16 @@
 <?php
-class WP_Agent_API {
+class WP_Agent_API
+{
     private $user;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->user = new WP_Agent_User();
         add_action('wp_ajax_wp_agent_validate_api_key', [$this, 'validate_api_key']);
     }
 
-    public function send_existing_app_password_to_api(): bool {
+    public function send_existing_app_password_to_api(): bool
+    {
         try {
             $user = $this->user->get_user();
             $app_password = $this->user->get_or_create_application_password();
@@ -21,7 +24,8 @@ class WP_Agent_API {
         return false;
     }
 
-    public function send_application_password_to_api(int $user_id, string $app_password): bool {
+    public function send_application_password_to_api(int $user_id, string $app_password): bool
+    {
         $api_key = get_option('wp_agent_api_key');
 
         if (empty($api_key)) {
@@ -39,7 +43,8 @@ class WP_Agent_API {
         return true;
     }
 
-    public function validate_api_key($new_value, $old_value): string {
+    public function validate_api_key($new_value, $old_value): string
+    {
         if ($new_value === $old_value) {
             return $old_value;
         }
@@ -60,7 +65,8 @@ class WP_Agent_API {
         }
     }
 
-    private function make_api_request(string $endpoint, array $body, string $api_key): array {
+    private function make_api_request(string $endpoint, array $body, string $api_key): array
+    {
         $response = wp_remote_post(WP_AGENT_API_ENDPOINT . $endpoint, [
             'body' => wp_json_encode($body),
             'headers' => [
@@ -88,7 +94,8 @@ class WP_Agent_API {
         return $result;
     }
 
-    public function notify_post_update($post_id) {
+    public function notify_post_update($post_id)
+    {
         $api_key = get_option('wp_agent_api_key');
 
         if (empty($api_key)) {
@@ -111,7 +118,8 @@ class WP_Agent_API {
         }
     }
 
-    public function sync_after_api_key_update($old_value, $new_value, $option) {
+    public function sync_after_api_key_update($old_value, $new_value, $option)
+    {
         if ($new_value === $old_value) {
             return;
         }
@@ -128,11 +136,13 @@ class WP_Agent_API {
         }
     }
 
-    private function log_error(string $message): void {
+    private function log_error(string $message): void
+    {
         error_log('[WP_Agent_API] ERROR: ' . $message);
     }
 
-    private function log_info(string $message): void {
+    private function log_info(string $message): void
+    {
         error_log('[WP_Agent_API] INFO: ' . $message);
     }
 }
