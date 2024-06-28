@@ -3,7 +3,7 @@
     <ChatModal v-if="isModalOpen" @close="toggleModal" />
     <button id="open-chat-modal"
             @click="toggleModal"
-            class="wp-agent-button tw-fixed tw-bottom-6 tw-right-6 tw-bg-white tw-rounded-full tw-w-16 tw-h-16 tw-flex tw-items-center tw-justify-center tw-text-6xl tw-shadow-lg">
+            class="z-[99999] tw-fixed tw-bottom-6 tw-right-6 tw-bg-white tw-rounded-full tw-w-16 tw-h-16 tw-flex tw-items-center tw-justify-center tw-text-6xl tw-shadow-lg">
       <img :src="wpAgentData.logoUrl" alt="WP Agent logo" class="tw-w-10 tw-h-10" />
       <span class="tw-sr-only">Open chat</span>
     </button>
@@ -27,13 +27,3 @@ const toggleModal = () => {
   localStorage.setItem('isModalOpen', isModalOpen.value.toString());
 };
 </script>
-
-<style scoped>
-.wp-agent-container {
-  all: initial;
-}
-
-.wp-agent-button {
-  z-index: 99999;
-}
-</style>
